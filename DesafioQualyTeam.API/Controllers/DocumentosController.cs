@@ -133,13 +133,13 @@ namespace DesafioQualyTeam.API.Controllers
             return NoContent();
         }
 
-        // GET: api/Documentos/5/Download
+        // GET: api/Documentos/5/DownloadArquivo
         [HttpGet("{id}/DownloadArquivo")]
         public async Task<ActionResult<Documento>> DownloadArquivo(Guid id)
         {
             var documento = await _context.Documentos
                 .Include(e => e.DetalheArquivo)
-                .Include(e => e.Processo)
+                    .ThenInclude(e => e.Arquivo)
                 .SingleOrDefaultAsync(e => e.Id == id);
 
             if (documento == null)
@@ -147,10 +147,15 @@ namespace DesafioQualyTeam.API.Controllers
                 return NotFound();
             }
 
-            var memory = new MemoryStream(documento.DetalheArquivo.Arquivo.Dados);
-            memory.Position = 0;
+            var arquivo = documento.DetalheArquivo?.Arquivo?.Dados;
 
-            return File(memory, documento.DetalheArquivo.ContentType);
+            if (arquivo == null)
+                return StatusCode(500, $"Internal server error.");
+
+            var memory = new MemoryStream(arquivo);
+            var contentType = documento.DetalheArquivo?.ContentType ?? "application/octet-stream";
+
+            return File(memory, contentType);
         }
 
         private bool DocumentoExists(Guid id)
