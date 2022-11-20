@@ -84,36 +84,39 @@ namespace DesafioQualyTeam.API.Controllers
             try
             {
                 var file = Request.Form.Files.FirstOrDefault(defaultValue: null);
-                if (file?.Length > 0)
-                {
-                    documento.DetalheArquivo = new()
-                    {
-                        Nome = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'),
-                        ContentType = file.ContentType
-                    };
-
-                    using (var stream = new MemoryStream())
-                    {
-                        file.CopyTo(stream);
-                        documento.DetalheArquivo.Arquivo = new() { Dados = stream.ToArray() };
-                    }
-
-                    _context.Documentos.Add(documento);
-                    await _context.SaveChangesAsync();
-
-                    documento.DetalheArquivo.Arquivo = null;
-
-                    return CreatedAtAction("GetDocumento", new { id = documento.Id }, documento);
-                }
-                else
+                if (file?.Length <= 0)
                 {
                     return BadRequest();
                 }
+
+                documento.DetalheArquivo = new()
+                {
+                    Nome = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'),
+                    ContentType = file.ContentType
+                };
+
+                if (!DocumentoUtils.TiposArquivoAceitos.Contains(documento.DetalheArquivo.ContentType))
+                {
+                    return BadRequest();
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    file.CopyTo(stream);
+                    documento.DetalheArquivo.Arquivo = new() { Dados = stream.ToArray() };
+                }
+
+                _context.Documentos.Add(documento);
+                await _context.SaveChangesAsync();
+
+                documento.DetalheArquivo.Arquivo = null;
+
+                return CreatedAtAction("GetDocumento", new { id = documento.Id }, documento);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex}");
-            }            
+            }
         }
 
         // DELETE: api/Documentos/5

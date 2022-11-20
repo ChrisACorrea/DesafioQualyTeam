@@ -23,3 +23,12 @@ public class Documento : BaseEntity
 
     public Processo? Processo { get; set; }
 }
+
+public static class DocumentoUtils {
+    public static string[] TiposArquivoAceitos { get; } = { "application/msword", 
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/pdf",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    };
+}
