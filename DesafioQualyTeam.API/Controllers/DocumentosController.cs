@@ -48,7 +48,7 @@ namespace DesafioQualyTeam.API.Controllers
         // PUT: api/Documentos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}"), DisableRequestSizeLimit]
-        public async Task<IActionResult> PutDocumento(Guid id, Documento documento)
+        public async Task<IActionResult> PutDocumento(Guid id, [FromForm] Documento documento)
         {
             if (id != documento.Id)
             {
@@ -56,6 +56,26 @@ namespace DesafioQualyTeam.API.Controllers
             }
 
             _context.Entry(documento).State = EntityState.Modified;
+            _context.Entry(documento).Reference(e => e.DetalheArquivo).Load();
+            _context.Entry(documento.DetalheArquivo).Reference(e => e.Arquivo).Load();
+
+            var file = Request.Form.Files.FirstOrDefault(defaultValue: null);
+            if (file?.Length > 0)
+            {
+                documento.DetalheArquivo.Nome = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                documento.DetalheArquivo.ContentType = file.ContentType;
+
+                if (!DocumentoUtils.TiposArquivoAceitos.Contains(documento.DetalheArquivo.ContentType))
+                {
+                    return BadRequest();
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    file.CopyTo(stream);
+                    documento.DetalheArquivo.Arquivo.Dados = stream.ToArray();
+                }
+            }
 
             try
             {
