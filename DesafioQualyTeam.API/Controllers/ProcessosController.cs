@@ -55,6 +55,7 @@ namespace DesafioQualyTeam.API.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                return Ok(processo);
             }
             catch (DbUpdateConcurrencyException)
             {

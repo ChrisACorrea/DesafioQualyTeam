@@ -80,6 +80,9 @@ namespace DesafioQualyTeam.API.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                _context.Entry(documento).Reference(e => e.Processo).Load();
+                documento.DetalheArquivo.Arquivo = null;
+                return Ok(documento);
             }
             catch (DbUpdateConcurrencyException)
             {
