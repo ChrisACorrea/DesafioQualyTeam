@@ -7,7 +7,7 @@
     <button *ngIf="!modoEdicao" pButton type="button" label="Editar" (click)="alternarModoEdicao()"
       class="p-button-sm ml-1">
     </button>
-    <button *ngIf="modoEdicao" pButton type="button" label="Cancelar" (click)="alternarModoEdicao()"
+    <button *ngIf="modoEdicao" pButton type="button" label="Cancelar" (click)="cancelarEdicao()"
       class="p-button-secondary p-button-sm ml-1">
     </button>
     <button *ngIf="modoEdicao" pButton type="button" label="Salvar" (click)="salvar()" class="p-button-sm ml-1">

@@ -93,9 +93,16 @@ export abstract class BaseDetailComponent<T extends BaseModel, U extends BaseSer
 
   public desabilitarModoEdicao(): void {
     this.modoEdicao = false;
+  }
 
-    if (this.isNovaEntidade())
+  public cancelarEdicao(): void {
+    this.desabilitarModoEdicao();
+    if (this.isNovaEntidade()) {
       this.router.navigate([".."], { relativeTo: this.route });
+      return;
+    }
+
+    this.buscarDados();
   }
 
   public alternarModoEdicao(): void {
