@@ -1,0 +1,61 @@
+<div>
+
+  <!-- BOTÕES -->
+  <div class="flex flex-1	flex-row">
+    <button pButton type="button" label="Voltar" (click)="voltarParaLista()" class="p-button-sm">
+    </button>
+    <button *ngIf="!modoEdicao" pButton type="button" label="Editar" (click)="alternarModoEdicao()"
+      class="p-button-sm ml-1">
+    </button>
+    <button *ngIf="modoEdicao" pButton type="button" label="Cancelar" (click)="alternarModoEdicao()"
+      class="p-button-secondary p-button-sm ml-1">
+    </button>
+    <button *ngIf="modoEdicao" pButton type="button" label="Salvar" (click)="salvar()" class="p-button-sm ml-1">
+    </button>
+    <div class="flex flex-1"></div>
+    <button *ngIf="modoEdicao && !isNovaEntidade()" pButton type="button" label="Deletar" (click)="deletar()"
+      class="p-button-danger p-button-sm">
+    </button>
+  </div>
+
+  <!-- FORMULÁRIO -->
+  <div class="mt-3 flex flex-column">
+    <label for="codigo">Código:</label>
+    <input id="codigo" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.codigo" />
+  </div>
+
+  <div class="mt-3 flex flex-column">
+    <label for="titulo">Título:</label>
+    <input id="titulo" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.titulo" />
+  </div>
+
+  <div class="mt-3 flex flex-column">
+    <label for="categoria">Categoria:</label>
+    <input id="categoria" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.categoria" />
+  </div>
+
+  <div class="mt-3 flex flex-column">
+    <label for="codigo">Processo:</label>
+    <p-dropdown [disabled]="!modoEdicao" placeholder="Escolha um processo" [options]="processos"
+      [(ngModel)]="entidade.processo" optionLabel="nome" [required]="true">
+    </p-dropdown>
+  </div>
+
+  <div *ngIf="modoEdicao; else arquivoDownload" class="mt-3 flex flex-column">
+    <label for="codigo">Arquivo:</label>
+    <p-fileUpload [disabled]="!modoEdicao" [fileLimit]="1" [customUpload]="true" (onSelect)="prepararArquivo($event)"
+      [showUploadButton]="false" [showCancelButton]="false" [accept]="tiposDocumentosAceitos"></p-fileUpload>
+  </div>
+
+  <ng-template #arquivoDownload>
+    <div class="mt-3 flex flex-column">
+      <label for="codigo">Arquivo:</label>
+      <div class="flex flex-1 flex-row align-items-center ">
+        <input id="codigo" type="text" pInputText [disabled]="true" [(ngModel)]="nomeArquivo" />
+        <a pButton pRipple icon="pi pi-download" class="ml-1 p-button-sm no-underline" [href]="getLinkDownload()"
+          target="_blank" rel="noopener"></a>
+      </div>
+    </div>
+  </ng-template>
+
+</div>
