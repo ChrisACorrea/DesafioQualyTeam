@@ -1,8 +1,8 @@
 <div>
 
   <!-- BOTÕES -->
-  <div class="flex flex-1	flex-row">
-    <button pButton type="button" label="Voltar" (click)="voltarParaLista()" class="p-button-sm">
+  <div class="flex flex-1	flex-row mb-3">
+    <button pButton type="button" label="Voltar" (click)="voltarParaLista()" class="p-button-sm p-button-secondary">
     </button>
     <button *ngIf="!modoEdicao" pButton type="button" label="Editar" (click)="alternarModoEdicao()"
       class="p-button-sm ml-1">
@@ -19,7 +19,7 @@
   </div>
 
   <!-- FORMULÁRIO -->
-  <div class="mt-3 flex flex-column">
+  <div class="field p-fluid">
     <label for="codigo">Código:</label>
     <input id="codigo" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.codigo"
       [pKeyFilter]="'pnum'" required #codigo="ngModel"
@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <div class="mt-3 flex flex-column">
+  <div class="field p-fluid">
     <label for="titulo">Título:</label>
     <input id="titulo" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.titulo" required
       #titulo="ngModel" [ngClass]="{'ng-invalid': titulo.invalid, 'ng-dirty': (titulo.dirty || titulo.touched)}"
@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <div class="mt-3 flex flex-column">
+  <div class="field p-fluid">
     <label for="categoria">Categoria:</label>
     <input id="categoria" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.categoria" required
       #categoria="ngModel"
@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <div class="mt-3 flex flex-column">
+  <div class="field p-fluid">
     <label for="codigo">Processo:</label>
     <p-dropdown [disabled]="!modoEdicao" placeholder="Escolha um processo" [options]="processos"
       [(ngModel)]="entidade.processo" optionLabel="nome" [required]="true" #processo="ngModel"
@@ -63,14 +63,14 @@
     </div>
   </div>
 
-  <div *ngIf="modoEdicao; else arquivoDownload" class="mt-3 flex flex-column">
+  <div *ngIf="modoEdicao; else arquivoDownload" class="field p-fluid">
     <label for="codigo">Arquivo:</label>
     <p-fileUpload [disabled]="!modoEdicao" [fileLimit]="1" [customUpload]="true" (onSelect)="prepararArquivo($event)"
       [showUploadButton]="false" [showCancelButton]="false" [accept]="tiposDocumentosAceitos"></p-fileUpload>
   </div>
 
   <ng-template #arquivoDownload>
-    <div class="mt-3 flex flex-column">
+    <div class="field p-fluid">
       <label for="codigo">Arquivo:</label>
       <div class="flex flex-1 flex-row align-items-center ">
         <input id="codigo" type="text" pInputText [disabled]="true" [(ngModel)]="nomeArquivo" />
