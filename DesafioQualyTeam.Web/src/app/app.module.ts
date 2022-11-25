@@ -14,8 +14,12 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputTextModule } from 'primeng/inputtext';
+import { KeyFilterModule } from 'primeng/keyfilter';
 import { MenubarModule } from 'primeng/menubar';
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 
 /* Own Imports */
 import { DocumentoDetailComponent } from './components/documento/documento-detail/documento-detail.component';
@@ -45,9 +49,13 @@ import { ProcessoListComponent } from './components/processo/processo-list/proce
     FormsModule,
     HttpClientModule,
     InputTextModule,
+    KeyFilterModule,
     MenubarModule,
+    MessageModule,
+    MessagesModule,
     RouterModule,
     TableModule,
+    ToastModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

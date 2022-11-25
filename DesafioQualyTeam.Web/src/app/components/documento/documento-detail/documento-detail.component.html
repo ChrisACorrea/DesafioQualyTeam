@@ -21,24 +21,46 @@
   <!-- FORMULÁRIO -->
   <div class="mt-3 flex flex-column">
     <label for="codigo">Código:</label>
-    <input id="codigo" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.codigo" />
+    <input id="codigo" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.codigo"
+      [pKeyFilter]="'pnum'" required #codigo="ngModel"
+      [ngClass]="{'ng-invalid': codigo.invalid, 'ng-dirty': (codigo.dirty || codigo.touched)}"
+      aria-describedby="codigo-help" />
+    <div *ngIf="codigo.invalid && (codigo.dirty || codigo.touched)">
+      <small *ngIf="codigo.errors?.['required']" id="codigo-help" class="p-error">Campo obrigatório.</small>
+    </div>
   </div>
 
   <div class="mt-3 flex flex-column">
     <label for="titulo">Título:</label>
-    <input id="titulo" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.titulo" />
+    <input id="titulo" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.titulo" required
+      #titulo="ngModel" [ngClass]="{'ng-invalid': titulo.invalid, 'ng-dirty': (titulo.dirty || titulo.touched)}"
+      aria-describedby="titulo-help" />
+    <div *ngIf="titulo.invalid && (titulo.dirty || titulo.touched)">
+      <small *ngIf="titulo.errors?.['required']" id="titulo-help" class="p-error">Campo obrigatório.</small>
+    </div>
   </div>
 
   <div class="mt-3 flex flex-column">
     <label for="categoria">Categoria:</label>
-    <input id="categoria" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.categoria" />
+    <input id="categoria" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.categoria" required
+      #categoria="ngModel"
+      [ngClass]="{'ng-invalid': categoria.invalid, 'ng-dirty': (categoria.dirty || categoria.touched)}"
+      aria-describedby="categoria-help" />
+    <div *ngIf="categoria.invalid && (categoria.dirty || categoria.touched)">
+      <small *ngIf="categoria.errors?.['required']" id="categoria-help" class="p-error">Campo obrigatório.</small>
+    </div>
   </div>
 
   <div class="mt-3 flex flex-column">
     <label for="codigo">Processo:</label>
     <p-dropdown [disabled]="!modoEdicao" placeholder="Escolha um processo" [options]="processos"
-      [(ngModel)]="entidade.processo" optionLabel="nome" [required]="true">
+      [(ngModel)]="entidade.processo" optionLabel="nome" [required]="true" #processo="ngModel"
+      [ngClass]="{'ng-invalid': processo.invalid, 'ng-dirty': (processo.dirty || processo.touched)}"
+      aria-describedby="processo-help">
     </p-dropdown>
+    <div *ngIf="processo.invalid && (processo.dirty || processo.touched)">
+      <small *ngIf="processo.errors?.['required']" id="processo-help" class="p-error">Campo obrigatório.</small>
+    </div>
   </div>
 
   <div *ngIf="modoEdicao; else arquivoDownload" class="mt-3 flex flex-column">

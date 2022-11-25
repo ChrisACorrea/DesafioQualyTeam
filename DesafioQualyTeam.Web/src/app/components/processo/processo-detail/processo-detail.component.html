@@ -21,7 +21,12 @@
   <!-- FORMULÁRIO -->
   <div class="mt-3 flex flex-column">
     <label for="nome">Nome:</label>
-    <input id="nome" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.nome" />
+    <input id="nome" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.nome" required
+      #nome="ngModel" [ngClass]="{'ng-invalid': nome.invalid, 'ng-dirty': (nome.dirty || nome.touched)}"
+      aria-describedby="nome-help" />
+    <div *ngIf="nome.invalid && (nome.dirty || nome.touched)">
+      <small *ngIf="nome.errors?.['required']" id="nome-help" class="p-error">Campo obrigatório.</small>
+    </div>
   </div>
 
 </div>

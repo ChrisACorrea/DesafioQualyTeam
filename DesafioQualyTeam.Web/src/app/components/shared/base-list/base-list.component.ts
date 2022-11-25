@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseModel } from 'src/app/components/shared/base.model';
 import { BaseService } from 'src/app/components/shared/base.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-base-list',
@@ -12,6 +13,7 @@ export abstract class BaseListComponent<T extends BaseModel, U extends BaseServi
   protected abstract readonly service: U
   protected readonly route: ActivatedRoute = inject(ActivatedRoute)
   protected readonly router: Router = inject(Router)
+  protected readonly messageService: MessageService = inject(MessageService)
 
   public entidades: T[] = [];
 

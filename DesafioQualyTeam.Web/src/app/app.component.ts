@@ -2,12 +2,13 @@
 import { Component, OnInit } from '@angular/core';
 
 /* PrimeNg Imports */
-import { MenuItem, PrimeNGConfig } from 'primeng/api';
+import { MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [MessageService]
 })
 export class AppComponent implements OnInit {
   title = 'DesafioQualyTeam.Web';

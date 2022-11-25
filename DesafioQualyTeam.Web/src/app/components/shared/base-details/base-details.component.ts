@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { BaseModel } from 'src/app/components/shared/base.model';
 import { BaseService } from 'src/app/components/shared/base.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-base-details',
@@ -14,6 +15,7 @@ export abstract class BaseDetailComponent<T extends BaseModel, U extends BaseSer
   protected abstract readonly service: U
   protected readonly route: ActivatedRoute = inject(ActivatedRoute)
   protected readonly router: Router = inject(Router)
+  protected readonly messageService: MessageService = inject(MessageService)
 
   public entidadeId: string | null = null;
   public entidade: T;
@@ -59,8 +61,13 @@ export abstract class BaseDetailComponent<T extends BaseModel, U extends BaseSer
         next: (value) => {
           this.entidade = value;
           this.desabilitarModoEdicao();
+          this.mensagemSucessoAoSalvar();
           this.aposSalvar();
           this.router.navigate([this.service.getResourceName(), value.id]);
+        },
+        error: (err) => {
+          this.mensagemErroAoSalvar();
+          console.error(err);
         }
       }
     );
@@ -114,5 +121,17 @@ export abstract class BaseDetailComponent<T extends BaseModel, U extends BaseSer
 
   public isNovaEntidade(): boolean {
     return this.entidadeId === "novo";
+  }
+
+  protected mensagemSucessoAoSalvar(): void {
+    this.messageService.add(
+      { severity: 'success', summary: 'Salvo com sucesso' }
+    );
+  }
+
+  protected mensagemErroAoSalvar(): void {
+    this.messageService.add(
+      { severity: 'error', summary: 'Erro ao salvar', detail: "Por favor, verifique o preenchimento dos campos" }
+    );
   }
 }
