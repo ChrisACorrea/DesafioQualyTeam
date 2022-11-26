@@ -32,7 +32,7 @@ namespace DesafioQualyTeam.API.Controllers
         {
             var processo = await _context.Processos.FindAsync(id);
 
-            if (processo == null)
+            if (processo is null)
             {
                 return NotFound();
             }
@@ -68,8 +68,6 @@ namespace DesafioQualyTeam.API.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
         // POST: api/Processos
@@ -88,7 +86,7 @@ namespace DesafioQualyTeam.API.Controllers
         public async Task<IActionResult> DeleteProcesso(Guid id)
         {
             var processo = await _context.Processos.FindAsync(id);
-            if (processo == null)
+            if (processo is null)
             {
                 return NotFound();
             }

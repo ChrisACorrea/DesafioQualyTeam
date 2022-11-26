@@ -37,7 +37,7 @@ namespace DesafioQualyTeam.API.Controllers
                 .Include(e => e.Processo)
                 .SingleOrDefaultAsync(e => e.Id == id);
 
-            if (documento == null)
+            if (documento is null)
             {
                 return NotFound();
             }
@@ -50,35 +50,33 @@ namespace DesafioQualyTeam.API.Controllers
         [HttpPut("{id}"), DisableRequestSizeLimit]
         public async Task<IActionResult> PutDocumento(Guid id, [FromForm] Documento documento)
         {
-            if (id != documento.Id)
+            try
             {
-                return BadRequest();
-            }
-
-            _context.Entry(documento).State = EntityState.Modified;
-            _context.Entry(documento).Reference(e => e.DetalheArquivo).Load();
-            _context.Entry(documento.DetalheArquivo).Reference(e => e.Arquivo).Load();
-
-            var file = Request.Form.Files.FirstOrDefault(defaultValue: null);
-            if (file?.Length > 0)
-            {
-                documento.DetalheArquivo.Nome = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                documento.DetalheArquivo.ContentType = file.ContentType;
-
-                if (!DocumentoUtils.TiposArquivoAceitos.Contains(documento.DetalheArquivo.ContentType))
+                if (id != documento.Id)
                 {
                     return BadRequest();
                 }
 
-                using (var stream = new MemoryStream())
-                {
-                    file.CopyTo(stream);
-                    documento.DetalheArquivo.Arquivo.Dados = stream.ToArray();
-                }
-            }
+                _context.Entry(documento).State = EntityState.Modified;
+                _context.Entry(documento).Reference(e => e.DetalheArquivo).Load();
+                _context.Entry(documento.DetalheArquivo!).Reference(e => e.Arquivo).Load();
 
-            try
-            {
+                if (documento.DetalheArquivo?.Arquivo is null)
+                {
+                    return StatusCode(500, $"Internal server error");
+                }
+
+                if (FileExists(out var file))
+                {
+                    if (!DocumentoUtils.isArquivoAceito(file!.ContentType))
+                    {
+                        return BadRequest();
+                    }
+
+                    PreencherDadosDeArquivo(documento, file);
+                }
+
+
                 await _context.SaveChangesAsync();
                 _context.Entry(documento).Reference(e => e.Processo).Load();
                 documento.DetalheArquivo.Arquivo = null;
@@ -87,16 +85,14 @@ namespace DesafioQualyTeam.API.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!DocumentoExists(id))
-                {
                     return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                throw;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
 
         // POST: api/Documentos
@@ -104,30 +100,19 @@ namespace DesafioQualyTeam.API.Controllers
         [HttpPost, DisableRequestSizeLimit]
         public async Task<ActionResult<Documento>> PostDocumento([FromForm] Documento documento)
         {
+            documento.DetalheArquivo = new()
+            {
+                Arquivo = new()
+            };
+
             try
             {
-                var file = Request.Form.Files.FirstOrDefault(defaultValue: null);
-                if (file?.Length <= 0)
+                if (!FileExists(out var file) || !DocumentoUtils.isArquivoAceito(file!.ContentType))
                 {
                     return BadRequest();
                 }
 
-                documento.DetalheArquivo = new()
-                {
-                    Nome = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'),
-                    ContentType = file.ContentType
-                };
-
-                if (!DocumentoUtils.TiposArquivoAceitos.Contains(documento.DetalheArquivo.ContentType))
-                {
-                    return BadRequest();
-                }
-
-                using (var stream = new MemoryStream())
-                {
-                    file.CopyTo(stream);
-                    documento.DetalheArquivo.Arquivo = new() { Dados = stream.ToArray() };
-                }
+                PreencherDadosDeArquivo(documento, file);
 
                 _context.Documentos.Add(documento);
                 await _context.SaveChangesAsync();
@@ -148,7 +133,7 @@ namespace DesafioQualyTeam.API.Controllers
         {
             var documento = await _context.Documentos.FindAsync(id);
 
-            if (documento == null)
+            if (documento is null)
             {
                 return NotFound();
             }
@@ -168,20 +153,43 @@ namespace DesafioQualyTeam.API.Controllers
                     .ThenInclude(e => e.Arquivo)
                 .SingleOrDefaultAsync(e => e.Id == id);
 
-            if (documento == null)
+            if (documento is null)
             {
                 return NotFound();
             }
 
             var arquivo = documento.DetalheArquivo?.Arquivo?.Dados;
 
-            if (arquivo == null)
+            if (arquivo is null)
                 return StatusCode(500, $"Internal server error.");
 
             var memory = new MemoryStream(arquivo);
             var contentType = documento.DetalheArquivo?.ContentType ?? "application/octet-stream";
 
             return File(memory, contentType);
+        }
+
+        private void PreencherDadosDeArquivo(Documento documento, IFormFile file)
+        {
+            documento.DetalheArquivo!.Nome = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            documento.DetalheArquivo!.ContentType = file.ContentType;
+            documento.DetalheArquivo!.Arquivo!.Dados = FileToByteArray(file);
+        }
+
+        private bool FileExists(out IFormFile? file)
+        {
+            file = Request.Form.Files.FirstOrDefault(defaultValue: null);
+
+            return file?.Length > 0;
+        }
+
+        private byte[] FileToByteArray(IFormFile file)
+        {
+            using (var stream = new MemoryStream())
+            {
+                file.CopyTo(stream);
+                return stream.ToArray();
+            }
         }
 
         private bool DocumentoExists(Guid id)

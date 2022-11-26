@@ -31,4 +31,9 @@ public static class DocumentoUtils {
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     };
+
+    public static bool isArquivoAceito(string contenType)
+    {
+        return TiposArquivoAceitos.Contains(contenType);
+    }
 }
