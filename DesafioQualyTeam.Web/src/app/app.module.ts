@@ -28,6 +28,8 @@ import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProcessoDetailComponent } from './components/processo/processo-detail/processo-detail.component';
 import { ProcessoListComponent } from './components/processo/processo-list/processo-list.component';
+import { CategoriaDetailComponent } from './components/categoria/categoria-detail/categoria-detail.component';
+import { CategoriaListComponent } from './components/categoria/categoria-list/categoria-list.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { ProcessoListComponent } from './components/processo/processo-list/proce
     NotFoundComponent,
     ProcessoDetailComponent,
     ProcessoListComponent,
+    CategoriaDetailComponent,
+    CategoriaListComponent,
   ],
   imports: [
     AppRoutingModule,

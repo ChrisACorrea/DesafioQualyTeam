@@ -19,7 +19,7 @@ export class DocumentoService extends BaseService<Documento>{
     if (entity.id) formData.append("id", entity.id);
     if (entity.codigo) formData.append("codigo", entity.codigo);
     if (entity.titulo) formData.append("titulo", entity.titulo);
-    if (entity.categoria) formData.append("categoria", entity.categoria);
+    if (entity.categoria?.id) formData.append("categoriaId", entity.categoria.id);
     if (entity.processo?.id) formData.append("processoId", entity.processo.id);
     if (entity.arquivo) formData.append("arquivo", entity.arquivo);
 

@@ -1,3 +1,4 @@
+import { Categoria } from "src/app/components/categoria/categoria.model";
 import { DetalhesArquivo } from "src/app/components/documento/detalhes-arquivo.model";
 import { Processo } from "src/app/components/processo/processo.model";
 import { BaseModel } from "src/app/components/shared/base.model";
@@ -5,7 +6,8 @@ import { BaseModel } from "src/app/components/shared/base.model";
 export class Documento extends BaseModel {
   public codigo: string;
   public titulo: string;
-  public categoria: string;
+  public categoriaId: string;
+  public categoria: Categoria;
   public detalheArquivo: DetalhesArquivo;
   public processoId: string;
   public processo: Processo;

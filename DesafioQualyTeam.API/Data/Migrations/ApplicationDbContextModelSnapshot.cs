@@ -46,6 +46,82 @@ namespace DesafioQualyTeam.API.Data.Migrations
                     b.ToTable("Arquivos");
                 });
 
+            modelBuilder.Entity("DesafioQualyTeam.API.Entities.Categoria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Criacao")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("ProcessoId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("UltimaAtualizacao")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcessoId");
+
+                    b.ToTable("Categorias");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("eaa1721b-774b-4312-a984-d105d8d107bb"),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5222),
+                            Nome = "Categoria_A_01",
+                            ProcessoId = new Guid("8a0e1284-8b83-4d75-a5b8-7427ac40f7c0"),
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5222)
+                        },
+                        new
+                        {
+                            Id = new Guid("73c46241-9209-4a39-81f3-f60419aa4b3d"),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5236),
+                            Nome = "Categoria_A_02",
+                            ProcessoId = new Guid("8a0e1284-8b83-4d75-a5b8-7427ac40f7c0"),
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5236)
+                        },
+                        new
+                        {
+                            Id = new Guid("15cbc4cd-0a1a-4a9a-871a-f1f4a6457ebd"),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5243),
+                            Nome = "Categoria_A_03",
+                            ProcessoId = new Guid("8a0e1284-8b83-4d75-a5b8-7427ac40f7c0"),
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5243)
+                        },
+                        new
+                        {
+                            Id = new Guid("06a28f55-71b2-49c2-a4e1-5a8f5b86496e"),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5260),
+                            Nome = "Categoria_B_01",
+                            ProcessoId = new Guid("600f3fda-d690-4116-b7ab-1c7740fd46c3"),
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5260)
+                        },
+                        new
+                        {
+                            Id = new Guid("c8a5d4f9-8c5f-4211-8449-375e42c76c30"),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5266),
+                            Nome = "Categoria_B_02",
+                            ProcessoId = new Guid("600f3fda-d690-4116-b7ab-1c7740fd46c3"),
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5266)
+                        },
+                        new
+                        {
+                            Id = new Guid("eb172cfd-7e8b-4f20-8ea6-192579bdd074"),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5273),
+                            Nome = "Categoria_B_03",
+                            ProcessoId = new Guid("600f3fda-d690-4116-b7ab-1c7740fd46c3"),
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(5273)
+                        });
+                });
+
             modelBuilder.Entity("DesafioQualyTeam.API.Entities.DetalhesArquivo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -83,9 +159,8 @@ namespace DesafioQualyTeam.API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Categoria")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("CategoriaId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Codigo")
                         .IsRequired()
@@ -94,7 +169,8 @@ namespace DesafioQualyTeam.API.Data.Migrations
                     b.Property<DateTime>("Criacao")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("ProcessoId")
+                    b.Property<Guid?>("ProcessoId")
+                        .IsRequired()
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Titulo")
@@ -105,6 +181,8 @@ namespace DesafioQualyTeam.API.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
 
                     b.HasIndex("Codigo")
                         .IsUnique();
@@ -138,37 +216,37 @@ namespace DesafioQualyTeam.API.Data.Migrations
                         new
                         {
                             Id = new Guid("8a0e1284-8b83-4d75-a5b8-7427ac40f7c0"),
-                            Criacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(751),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4741),
                             Nome = "Processo_01",
-                            UltimaAtualizacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(751)
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4741)
                         },
                         new
                         {
                             Id = new Guid("600f3fda-d690-4116-b7ab-1c7740fd46c3"),
-                            Criacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(787),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4789),
                             Nome = "Processo_02",
-                            UltimaAtualizacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(787)
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4789)
                         },
                         new
                         {
                             Id = new Guid("ee5fe867-fe4e-40d3-bda6-9ee6d3d71714"),
-                            Criacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(794),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4799),
                             Nome = "Processo_03",
-                            UltimaAtualizacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(794)
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4799)
                         },
                         new
                         {
                             Id = new Guid("b4185d9e-f665-4bee-b764-ade04036354e"),
-                            Criacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(800),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4807),
                             Nome = "Processo_04",
-                            UltimaAtualizacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(800)
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4807)
                         },
                         new
                         {
                             Id = new Guid("66f30ab7-fc63-4347-9c94-755d8c0f790f"),
-                            Criacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(804),
+                            Criacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4814),
                             Nome = "Processo_05",
-                            UltimaAtualizacao = new DateTime(2022, 11, 19, 15, 22, 40, 715, DateTimeKind.Local).AddTicks(804)
+                            UltimaAtualizacao = new DateTime(2022, 11, 30, 17, 1, 24, 585, DateTimeKind.Local).AddTicks(4814)
                         });
                 });
 
@@ -179,6 +257,17 @@ namespace DesafioQualyTeam.API.Data.Migrations
                         .HasForeignKey("DesafioQualyTeam.API.Entities.Arquivo", "DetalhesArquivoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DesafioQualyTeam.API.Entities.Categoria", b =>
+                {
+                    b.HasOne("DesafioQualyTeam.API.Entities.Processo", "Processo")
+                        .WithMany()
+                        .HasForeignKey("ProcessoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Processo");
                 });
 
             modelBuilder.Entity("DesafioQualyTeam.API.Entities.DetalhesArquivo", b =>
@@ -192,11 +281,19 @@ namespace DesafioQualyTeam.API.Data.Migrations
 
             modelBuilder.Entity("DesafioQualyTeam.API.Entities.Documento", b =>
                 {
+                    b.HasOne("DesafioQualyTeam.API.Entities.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DesafioQualyTeam.API.Entities.Processo", "Processo")
                         .WithMany()
                         .HasForeignKey("ProcessoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Categoria");
 
                     b.Navigation("Processo");
                 });

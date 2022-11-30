@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
       { label: 'Início', routerLink: '/' },
       { label: 'Documentos', routerLink: 'documentos' },
       { label: 'Processos', routerLink: 'processos' },
+      { label: 'Categorias', routerLink: 'categorias' },
     ];
   }
 }

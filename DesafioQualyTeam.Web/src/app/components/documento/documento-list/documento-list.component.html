@@ -21,7 +21,7 @@
         <td>{{documento.codigo}}</td>
         <td>{{documento.titulo}}</td>
         <td>{{documento.processo?.nome}}</td>
-        <td>{{documento.categoria}}</td>
+        <td>{{documento.categoria?.nome}}</td>
         <td>
           <a pButton pRipple icon="pi pi-download" class="ml-1 p-button-sm no-underline"
             [href]="getLinkDownload(documento.id)" target="_blank" rel="noopener"></a>

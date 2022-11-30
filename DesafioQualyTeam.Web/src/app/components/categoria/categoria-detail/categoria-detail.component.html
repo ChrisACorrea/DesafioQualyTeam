@@ -1,0 +1,44 @@
+<div>
+
+  <!-- BOTÕES -->
+  <div class="flex flex-1	flex-row mb-3">
+    <button pButton type="button" label="Voltar" (click)="voltarParaLista()" class="p-button-sm p-button-secondary">
+    </button>
+    <button *ngIf="!modoEdicao" pButton type="button" label="Editar" (click)="alternarModoEdicao()"
+      class="p-button-sm ml-1">
+    </button>
+    <button *ngIf="modoEdicao" pButton type="button" label="Cancelar" (click)="cancelarEdicao()"
+      class="p-button-secondary p-button-sm ml-1">
+    </button>
+    <button *ngIf="modoEdicao" pButton type="button" label="Salvar" (click)="salvar()" class="p-button-sm ml-1">
+    </button>
+    <div class="flex flex-1"></div>
+    <button *ngIf="modoEdicao && !isNovaEntidade()" pButton type="button" label="Deletar" (click)="deletar()"
+      class="p-button-danger p-button-sm">
+    </button>
+  </div>
+
+  <!-- FORMULÁRIO -->
+  <div class="field p-fluid">
+    <label for="nome">Nome:</label>
+    <input id="nome" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.nome" required
+      #nome="ngModel" [ngClass]="{'ng-invalid': nome.invalid, 'ng-dirty': (nome.dirty || nome.touched)}"
+      aria-describedby="nome-help" />
+    <div *ngIf="nome.invalid && (nome.dirty || nome.touched)">
+      <small *ngIf="nome.errors?.['required']" id="nome-help" class="p-error">Campo obrigatório.</small>
+    </div>
+  </div>
+
+  <div class="field p-fluid">
+    <label for="codigo">Processo:</label>
+    <p-dropdown [disabled]="!modoEdicao" placeholder="Escolha um processo" [options]="processos"
+      [(ngModel)]="entidade.processo" optionLabel="nome" [required]="true" #processo="ngModel"
+      [ngClass]="{'ng-invalid': processo.invalid, 'ng-dirty': (processo.dirty || processo.touched)}"
+      aria-describedby="processo-help">
+    </p-dropdown>
+    <div *ngIf="processo.invalid && (processo.dirty || processo.touched)">
+      <small *ngIf="processo.errors?.['required']" id="processo-help" class="p-error">Campo obrigatório.</small>
+    </div>
+  </div>
+
+</div>

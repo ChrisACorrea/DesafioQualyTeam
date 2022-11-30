@@ -22,7 +22,9 @@ namespace DesafioQualyTeam.API.Controllers
         public async Task<ActionResult<IEnumerable<Documento>>> GetDocumentos()
         {
             return await _context.Documentos
+                .Include(e => e.DetalheArquivo)
                 .Include(e => e.Processo)
+                .Include(e => e.Categoria)
                 .OrderBy(e => e.Titulo)
                 .AsNoTracking()
                 .ToListAsync();
@@ -35,6 +37,7 @@ namespace DesafioQualyTeam.API.Controllers
             var documento = await _context.Documentos
                 .Include(e => e.DetalheArquivo)
                 .Include(e => e.Processo)
+                .Include(e => e.Categoria)
                 .SingleOrDefaultAsync(e => e.Id == id);
 
             if (documento is null)
@@ -75,7 +78,6 @@ namespace DesafioQualyTeam.API.Controllers
 
                     PreencherDadosDeArquivo(documento, file);
                 }
-
 
                 await _context.SaveChangesAsync();
                 _context.Entry(documento).Reference(e => e.Processo).Load();

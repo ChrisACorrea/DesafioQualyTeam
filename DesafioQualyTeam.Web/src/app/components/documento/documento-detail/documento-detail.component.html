@@ -41,25 +41,28 @@
   </div>
 
   <div class="field p-fluid">
-    <label for="categoria">Categoria:</label>
-    <input id="categoria" type="text" pInputText [disabled]="!modoEdicao" [(ngModel)]="entidade.categoria" required
-      #categoria="ngModel"
-      [ngClass]="{'ng-invalid': categoria.invalid, 'ng-dirty': (categoria.dirty || categoria.touched)}"
-      aria-describedby="categoria-help" />
-    <div *ngIf="categoria.invalid && (categoria.dirty || categoria.touched)">
-      <small *ngIf="categoria.errors?.['required']" id="categoria-help" class="p-error">Campo obrigatório.</small>
-    </div>
-  </div>
-
-  <div class="field p-fluid">
     <label for="codigo">Processo:</label>
     <p-dropdown [disabled]="!modoEdicao" placeholder="Escolha um processo" [options]="processos"
-      [(ngModel)]="entidade.processo" optionLabel="nome" [required]="true" #processo="ngModel"
+      [(ngModel)]="entidade.processo" optionLabel="nome" [required]="true" [dataKey]="'id'" #processo="ngModel"
+      (onChange)="carregarCategoriasByProcesso()"
       [ngClass]="{'ng-invalid': processo.invalid, 'ng-dirty': (processo.dirty || processo.touched)}"
       aria-describedby="processo-help">
     </p-dropdown>
     <div *ngIf="processo.invalid && (processo.dirty || processo.touched)">
       <small *ngIf="processo.errors?.['required']" id="processo-help" class="p-error">Campo obrigatório.</small>
+    </div>
+  </div>
+
+  <div class="field p-fluid">
+    <label for="codigo">Categoria:</label>
+    <p-dropdown [disabled]="!modoEdicao || !entidade.processo || !categorias.length" placeholder="Escolha um processo"
+      [options]="categorias" [(ngModel)]="entidade.categoria" optionLabel="nome" [required]="true" [dataKey]="'id'"
+      #categoria="ngModel"
+      [ngClass]="{'ng-invalid': categoria.invalid, 'ng-dirty': (categoria.dirty || categoria.touched)}"
+      aria-describedby="categoria-help">
+    </p-dropdown>
+    <div *ngIf="categoria.invalid && (categoria.dirty || categoria.touched)">
+      <small *ngIf="categoria.errors?.['required']" id="categoria-help" class="p-error">Campo obrigatório.</small>
     </div>
   </div>
 

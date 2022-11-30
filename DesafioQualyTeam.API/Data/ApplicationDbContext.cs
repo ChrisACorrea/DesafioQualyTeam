@@ -8,6 +8,7 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<Arquivo> Arquivos { get; set; }
     public DbSet<Processo> Processos { get; set; }
+    public DbSet<Categoria> Categorias { get; set; }
     public DbSet<DetalhesArquivo> DetalhesArquivos { get; set; }
     public DbSet<Documento> Documentos { get; set; }
 
@@ -20,5 +21,6 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         new ProcessoEntityTypeConfiguration().Configure(modelBuilder.Entity<Processo>());
+        new CategoriaEntityTypeConfiguration().Configure(modelBuilder.Entity<Categoria>());
     }
 }

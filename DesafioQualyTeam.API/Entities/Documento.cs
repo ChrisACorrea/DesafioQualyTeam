@@ -14,8 +14,9 @@ public class Documento : BaseEntity
     public string Titulo { get; set; }
 
     [Required]
-    public string Categoria { get; set; }
- 
+    public Guid CategoriaId { get; set; }
+    public Categoria? Categoria { get; set; }
+
     public DetalhesArquivo? DetalheArquivo { get; set; }
 
     [Required]
